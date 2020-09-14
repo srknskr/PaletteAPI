@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a508f8e6241d41c9b2c9b088456cfc0a" Name="Diagram1">
+        <EntityTypeShape EntityType="PaletteModel.Comments" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.Favourites" Width="1.5" PointX="8.25" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.FollowingRelationsgips" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.PostColors" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.Posts" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.PostTags" Width="1.5" PointX="5.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.Tags" Width="1.5" PointX="3" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.UserProfile" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaletteModel.Users" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="PaletteModel.FK_Comments_Posts" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_Comments_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_Favourites_Posts" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_Favourites_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_PostColors_Posts" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_Posts_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_PostTags_Posts" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_PostTags_Tags" ManuallyRouted="false" />
+        <AssociationConnector Association="PaletteModel.FK_UserProfile_Users1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
