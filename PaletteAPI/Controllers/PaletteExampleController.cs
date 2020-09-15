@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace PaletteAPI.Controllers
 {
@@ -13,60 +14,77 @@ namespace PaletteAPI.Controllers
     {
         PaletteDAL paletteDAL = new PaletteDAL();
 
-        public HttpResponseMessage Get()
+        [ResponseType(typeof(IEnumerable<Users>))]
+        public IHttpActionResult Get()
         {
             var user= paletteDAL.GetAllUsers();
-            return Request.CreateResponse(HttpStatusCode.OK,user);
+            return Ok(user);
+            //return Request.CreateResponse(HttpStatusCode.OK,user);
         }
-        public HttpResponseMessage Get(int id)
+
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult Get(int id)
         {
             var user = paletteDAL.GetUsersById(id);
             if (user==null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound,"There is no record that has this id.");
+                return NotFound();
+                //return Request.CreateResponse(HttpStatusCode.NotFound,"There is no record that has this id.");
             }
-            return Request.CreateResponse(HttpStatusCode.OK, user);
+            return Ok(user);
+            //return Request.CreateResponse(HttpStatusCode.OK, user);
            
         }
-        public HttpResponseMessage Post(Users user)
+
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult Post(Users user)
         {
             if (ModelState.IsValid)
             {
-                var creadtedUser= paletteDAL.CreateUser(user);
-                return Request.CreateResponse(HttpStatusCode.Created, creadtedUser);
+                var createdUser= paletteDAL.CreateUser(user);
+                return CreatedAtRoute("DefaultApi", new { id = createdUser.UserID }, createdUser);
+                //return Request.CreateResponse(HttpStatusCode.Created, creadtedUser);
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return BadRequest(ModelState);
+                //return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             } 
         }
-        public HttpResponseMessage Put (int id,Users user)
+
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult Put (int id,Users user)
         {
             if (paletteDAL.IsThereAnyUser(id)==false)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound,"There is no record");
+                return NotFound();
+                //return Request.CreateErrorResponse(HttpStatusCode.NotFound,"There is no record");
             }
             else if (ModelState.IsValid==false)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return BadRequest(ModelState);
+                //return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.OK, paletteDAL.UpdateUser(id, user));
+                return Ok(paletteDAL.UpdateUser(id,user));
+                //return Request.CreateResponse(HttpStatusCode.OK, paletteDAL.UpdateUser(id, user));
             }
             
         }
-        public HttpResponseMessage Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
             if (paletteDAL.IsThereAnyUser(id)==false)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound,"Not found record");
+                return NotFound();
+                //return Request.CreateErrorResponse(HttpStatusCode.NotFound,"Not found record");
             }
             else
             {
                 paletteDAL.DeleteUser(id);
-                return Request.CreateResponse(HttpStatusCode.NoContent);
+                return Ok();
+                //return Request.CreateResponse(HttpStatusCode.NoContent);
             }
         }
     }
