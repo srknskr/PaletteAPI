@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\APIExceptionAttribute.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\PaletteExampleController.cs" />
     <Compile Include="Global.asax.cs">
