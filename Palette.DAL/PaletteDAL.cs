@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Palette.DAL
 {
-    public class PaletteDAL
+    public class PaletteDAL:BaseDAL
     {
-        PaletteEntities pe = new PaletteEntities();
+      
 
         public IEnumerable<Users> GetAllUsers()
         {

@@ -1,4 +1,5 @@
 ﻿using PaletteAPI.Attributes;
+using PaletteAPI.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace PaletteAPI
             // Web API routes
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new APIExceptionAttribute());
+            config.MessageHandlers.Add(new APIKeyHandler());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
