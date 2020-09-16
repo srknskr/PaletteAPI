@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIKeys.cs">
+      <DependentUpon>PaletteDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="BaseDAL.cs" />
     <Compile Include="Comments.cs">
       <DependentUpon>PaletteDataModel.tt</DependentUpon>

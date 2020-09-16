@@ -37,6 +37,7 @@ namespace Palette.DAL
         public virtual DbSet<Tags> Tags { get; set; }
         public virtual DbSet<UserProfile> UserProfile { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<APIKeys> APIKeys { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

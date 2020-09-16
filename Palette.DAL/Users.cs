@@ -23,6 +23,7 @@ namespace Palette.DAL
             this.FollowingRelationsgips1 = new HashSet<FollowingRelationsgips>();
             this.Posts = new HashSet<Posts>();
             this.UserProfile = new HashSet<UserProfile>();
+            this.APIKeys = new HashSet<APIKeys>();
         }
     
         public int UserID { get; set; }
@@ -42,5 +43,7 @@ namespace Palette.DAL
         public virtual ICollection<Posts> Posts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProfile> UserProfile { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<APIKeys> APIKeys { get; set; }
     }
 }

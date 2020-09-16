@@ -1,4 +1,5 @@
 ﻿using Palette.DAL;
+using PaletteAPI.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace PaletteAPI.Controllers
         PaletteDAL paletteDAL = new PaletteDAL();
 
         [ResponseType(typeof(IEnumerable<Users>))]
-        [Authorize]
+      //  [Authorize]
+
         public IHttpActionResult Get()
         {
             var user= paletteDAL.GetAllUsers();
@@ -24,7 +26,8 @@ namespace PaletteAPI.Controllers
         }
 
         [ResponseType(typeof(Users))]
-        
+       // [Authorize]
+        [APIAuthorize(Roles = "admin     ")]
         public IHttpActionResult Get(int id)
         {
             var user = paletteDAL.GetUsersById(id);

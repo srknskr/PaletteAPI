@@ -21,7 +21,7 @@ namespace PaletteAPI.Security
             var user = userDAL.GetUserByUserKey(apiKey);
             if (user!=null)
             {
-                var principal = new ClaimsPrincipal(new GenericIdentity(user.Username,"APIKey"));
+                var principal = new ClaimsPrincipal(new GenericIdentity(user.Users.Username,"APIKey"));
                 HttpContext.Current.User = principal;
             }
            

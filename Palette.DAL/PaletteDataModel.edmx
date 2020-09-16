@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PaletteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="APIKeys">
+          <Key>
+            <PropertyRef Name="APIKeyID" />
+          </Key>
+          <Property Name="APIKeyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="APIRole" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="Comments">
           <Key>
             <PropertyRef Name="CommentID" />
@@ -93,11 +102,23 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterDate" Type="date" Nullable="false" />
         </EntityType>
+        <Association Name="FK_APIKeys_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="APIKeys" Type="Self.APIKeys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="APIKeys">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Comments_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
           <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
@@ -262,6 +283,7 @@
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="PaletteModelStoreContainer">
+          <EntitySet Name="APIKeys" EntityType="Self.APIKeys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favourites" EntityType="Self.Favourites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FollowingRelationsgips" EntityType="Self.FollowingRelationsgips" Schema="dbo" store:Type="Tables" />
@@ -272,6 +294,10 @@
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_APIKeys_Users" Association="Self.FK_APIKeys_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="APIKeys" EntitySet="APIKeys" />
+          </AssociationSet>
           <AssociationSet Name="FK_Comments_Posts" Association="Self.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
@@ -435,6 +461,7 @@
           <NavigationProperty Name="FollowingRelationsgips1" Relationship="Self.FK_FollowingRelationships_Users1" FromRole="Users" ToRole="FollowingRelationsgips" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Posts_Users" FromRole="Users" ToRole="Posts" />
           <NavigationProperty Name="UserProfile" Relationship="Self.FK_UserProfile_Users1" FromRole="Users" ToRole="UserProfile" />
+          <NavigationProperty Name="APIKeys" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="Users" ToRole="APIKeys" />
         </EntityType>
         <Association Name="FK_Comments_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
@@ -653,6 +680,11 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="APIKeys" EntityType="PaletteModel.APIKeys" />
+          <AssociationSet Name="FK_APIKeys_Users" Association="PaletteModel.FK_APIKeys_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="APIKeys" EntitySet="APIKeys" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -665,6 +697,28 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="APIKeys">
+          <Key>
+            <PropertyRef Name="APIKeyID" />
+          </Key>
+          <Property Name="APIKeyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="APIRole" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserKey" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="APIKeys" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_APIKeys_Users">
+          <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PaletteModel.APIKeys" Role="APIKeys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="APIKeys">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -798,6 +852,16 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="PaletteModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="PaletteModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="APIKeys">
+            <EntityTypeMapping TypeName="PaletteModel.APIKeys">
+              <MappingFragment StoreEntitySet="APIKeys">
+                <ScalarProperty Name="UserKey" ColumnName="UserKey" />
+                <ScalarProperty Name="APIRole" ColumnName="APIRole" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="APIKeyID" ColumnName="APIKeyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
