@@ -16,7 +16,7 @@ namespace PaletteAPI.Controllers
         PaletteDAL paletteDAL = new PaletteDAL();
 
         [ResponseType(typeof(IEnumerable<Users>))]
-      //  [Authorize]
+        [Authorize]
 
         public IHttpActionResult Get()
         {
@@ -26,8 +26,8 @@ namespace PaletteAPI.Controllers
         }
 
         [ResponseType(typeof(Users))]
-       // [Authorize]
-        [APIAuthorize(Roles = "admin     ")]
+      //  [Authorize]
+       // [APIAuthorize(Roles = "admin     ")]
         public IHttpActionResult Get(int id)
         {
             var user = paletteDAL.GetUsersById(id);
