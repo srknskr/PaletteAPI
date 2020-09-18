@@ -13,14 +13,14 @@ namespace PaletteAPI.Controllers
     
     public class PaletteExampleController : ApiController
     {
-        PaletteDAL paletteDAL = new PaletteDAL();
+        UsersDAL userDAL = new UsersDAL();
 
         [ResponseType(typeof(IEnumerable<Users>))]
-        [Authorize]
+        //[Authorize]
 
         public IHttpActionResult Get()
         {
-            var user= paletteDAL.GetAllUsers();
+            var user= userDAL.GetAllUsers();
             return Ok(user);
             //return Request.CreateResponse(HttpStatusCode.OK,user);
         }
@@ -30,7 +30,7 @@ namespace PaletteAPI.Controllers
        // [APIAuthorize(Roles = "admin     ")]
         public IHttpActionResult Get(int id)
         {
-            var user = paletteDAL.GetUsersById(id);
+            var user = userDAL.GetUsersById(id);
             if (user==null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace PaletteAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var createdUser= paletteDAL.CreateUser(user);
+                var createdUser= userDAL.CreateUser(user);
                 return CreatedAtRoute("DefaultApi", new { id = createdUser.UserID }, createdUser);
                 //return Request.CreateResponse(HttpStatusCode.Created, creadtedUser);
             }
@@ -60,7 +60,7 @@ namespace PaletteAPI.Controllers
         [ResponseType(typeof(Users))]
         public IHttpActionResult Put (int id,Users user)
         {
-            if (paletteDAL.IsThereAnyUser(id)==false)
+            if (userDAL.IsThereAnyUser(id)==false)
             {
                 return NotFound();
                 //return Request.CreateErrorResponse(HttpStatusCode.NotFound,"There is no record");
@@ -73,21 +73,21 @@ namespace PaletteAPI.Controllers
             }
             else
             {
-                return Ok(paletteDAL.UpdateUser(id,user));
+                return Ok(userDAL.UpdateUser(id,user));
                 //return Request.CreateResponse(HttpStatusCode.OK, paletteDAL.UpdateUser(id, user));
             }
             
         }
         public IHttpActionResult Delete(int id)
         {
-            if (paletteDAL.IsThereAnyUser(id)==false)
+            if (userDAL.IsThereAnyUser(id)==false)
             {
                 return NotFound();
                 //return Request.CreateErrorResponse(HttpStatusCode.NotFound,"Not found record");
             }
             else
             {
-                paletteDAL.DeleteUser(id);
+                userDAL.DeleteUser(id);
                 return Ok();
                 //return Request.CreateResponse(HttpStatusCode.NoContent);
             }

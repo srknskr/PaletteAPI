@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Palette.DAL
 {
-    public class PaletteDAL:BaseDAL
+    public class UsersDAL : BaseDAL
     {
-      
-
         public IEnumerable<Users> GetAllUsers()
         {
-            
+
             return pe.Users;
         }
         public Users GetUsersById(int id)
@@ -30,7 +28,7 @@ namespace Palette.DAL
         {
             pe.Entry(user).State = System.Data.Entity.EntityState.Modified;
             pe.SaveChanges();
-            return user;    
+            return user;
         }
         public void DeleteUser(int id)
         {
@@ -39,7 +37,11 @@ namespace Palette.DAL
         }
         public bool IsThereAnyUser(int id)
         {
-            return pe.Users.Any(x=>x.UserID==id);
+            return pe.Users.Any(x => x.UserID == id);
+        }
+        public Users GetUserByUsername(string username)
+        {
+            return pe.Users.FirstOrDefault(x => x.Username.ToString() == username);
         }
     }
 }

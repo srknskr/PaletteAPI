@@ -17,8 +17,8 @@ namespace PaletteAPI.Security
         {
             var queryString = request.RequestUri.ParseQueryString();
             var apiKey = queryString["apiKey"];
-            UserDAL userDAL = new UserDAL();
-            var user = userDAL.GetUserByUserKey(apiKey);
+            APIKeysDAL aPIKeysDAL = new APIKeysDAL();
+            var user = aPIKeysDAL.GetUserByUserKey(apiKey);
             if (user!=null)
             {
                 var principal = new ClaimsPrincipal(new GenericIdentity(user.Users.Username,"APIKey"));

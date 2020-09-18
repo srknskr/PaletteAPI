@@ -14,9 +14,10 @@ namespace PaletteAPI.Security
         {
             var actionRoles = Roles;
             var username = HttpContext.Current.User.Identity.Name;
-            UserDAL userDAL = new UserDAL();
+            UsersDAL userDAL = new UsersDAL();
             var user = userDAL.GetUserByUsername(username);
-            var apirole = userDAL.GetAPIKeysByUserID(user.Username);
+            APIKeysDAL aPIKeysDAL = new APIKeysDAL();
+            var apirole = aPIKeysDAL.GetAPIKeysByUserID(user.Username);
             if (user!=null && actionRoles.Contains(apirole.APIRole))
             {
 
