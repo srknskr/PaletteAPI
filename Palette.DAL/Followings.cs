@@ -12,9 +12,9 @@ namespace Palette.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class FollowingRelationsgips
+    public partial class Followings
     {
-        public int FollowingRelationshipsID { get; set; }
+        public int FollowingsID { get; set; }
         public int UserID { get; set; }
         public int FollowingID { get; set; }
         public System.DateTime FollowedDate { get; set; }

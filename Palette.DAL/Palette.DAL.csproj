@@ -60,11 +60,12 @@
       <DependentUpon>PaletteDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\CommentsDAL.cs" />
+    <Compile Include="DAL\FollowingsDAL.cs" />
     <Compile Include="Favourites.cs">
       <DependentUpon>PaletteDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\FavouritesDAL.cs" />
-    <Compile Include="FollowingRelationsgips.cs">
+    <Compile Include="Followings.cs">
       <DependentUpon>PaletteDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PaletteDataModel.Context.cs">

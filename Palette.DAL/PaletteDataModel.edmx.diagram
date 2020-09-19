@@ -7,7 +7,6 @@
       <Diagram DiagramId="a508f8e6241d41c9b2c9b088456cfc0a" Name="Diagram1">
         <EntityTypeShape EntityType="PaletteModel.Comments" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
         <EntityTypeShape EntityType="PaletteModel.Favourites" Width="1.5" PointX="8.25" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="PaletteModel.FollowingRelationsgips" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PaletteModel.PostColors" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="PaletteModel.Posts" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PaletteModel.PostTags" Width="1.5" PointX="5.25" PointY="18.125" IsExpanded="true" />
@@ -19,16 +18,17 @@
         <AssociationConnector Association="PaletteModel.FK_Comments_Users" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_Favourites_Posts" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_Favourites_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users1" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_PostColors_Posts" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_Posts_Users" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_PostTags_Posts" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_PostTags_Tags" ManuallyRouted="false" />
         <AssociationConnector Association="PaletteModel.FK_UserProfile_Users1" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="PaletteModel.APIKeys" Width="1.5" PointX="3" PointY="8.25" />
+        <EntityTypeShape EntityType="PaletteModel.Followings" Width="1.5" PointX="3.25" PointY="8.75" />
+        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users" />
+        <AssociationConnector Association="PaletteModel.FK_FollowingRelationships_Users1" />
+        <EntityTypeShape EntityType="PaletteModel.APIKeys" Width="1.5" PointX="2.875" PointY="6" />
         <AssociationConnector Association="PaletteModel.FK_APIKeys_Users" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
