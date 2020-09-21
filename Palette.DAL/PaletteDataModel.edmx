@@ -11,8 +11,9 @@
           </Key>
           <Property Name="APIKeyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="APIRole" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="APIRole" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserKey" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="KeyCreateDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Comments">
           <Key>
@@ -103,7 +104,7 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterDate" Type="date" Nullable="false" />
         </EntityType>
@@ -357,7 +358,7 @@
           <Property Name="CommentText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Comments_Posts" FromRole="Comments" ToRole="Posts" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Comments_Users" FromRole="Comments" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_Comments_Users" FromRole="Comments" ToRole="Users" />
         </EntityType>
         <EntityType Name="Favourites">
           <Key>
@@ -368,7 +369,7 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="FavouriteDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Favourites_Posts" FromRole="Favourites" ToRole="Posts" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Favourites_Users" FromRole="Favourites" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_Favourites_Users" FromRole="Favourites" ToRole="Users" />
         </EntityType>
         <EntityType Name="PostColors">
           <Key>
@@ -393,8 +394,8 @@
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Posts" FromRole="Posts" ToRole="Comments" />
           <NavigationProperty Name="Favourites" Relationship="Self.FK_Favourites_Posts" FromRole="Posts" ToRole="Favourites" />
           <NavigationProperty Name="PostColors" Relationship="Self.FK_PostColors_Posts" FromRole="Posts" ToRole="PostColors" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Posts_Users" FromRole="Posts" ToRole="Users" />
           <NavigationProperty Name="PostTags" Relationship="Self.FK_PostTags_Posts" FromRole="Posts" ToRole="PostTags" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_Posts_Users" FromRole="Posts" ToRole="Users" />
         </EntityType>
         <EntityType Name="PostTags">
           <Key>
@@ -434,24 +435,8 @@
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="About" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_UserProfile_Users1" FromRole="UserProfile" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_UserProfile_Users1" FromRole="UserProfile" ToRole="Users" />
         </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users" FromRole="Users" ToRole="Comments" />
-          <NavigationProperty Name="Favourites" Relationship="Self.FK_Favourites_Users" FromRole="Users" ToRole="Favourites" />
-          <NavigationProperty Name="Posts" Relationship="Self.FK_Posts_Users" FromRole="Users" ToRole="Posts" />
-          <NavigationProperty Name="UserProfile" Relationship="Self.FK_UserProfile_Users1" FromRole="Users" ToRole="UserProfile" />
-          <NavigationProperty Name="Followings" Relationship="PaletteModel.FK_FollowingRelationships_Users" FromRole="Users" ToRole="Followings" />
-          <NavigationProperty Name="Followings1" Relationship="PaletteModel.FK_FollowingRelationships_Users1" FromRole="Users" ToRole="Followings" />
-          <NavigationProperty Name="APIKeys" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="Users" ToRole="APIKeys" />
-          </EntityType>
         <Association Name="FK_Comments_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
           <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
@@ -461,18 +446,6 @@
             </Principal>
             <Dependent Role="Comments">
               <PropertyRef Name="PostID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Comments_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="CommenterID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -488,18 +461,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Favourites_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Favourites" Type="Self.Favourites" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Favourites">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PostColors_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
           <End Role="PostColors" Type="Self.PostColors" Multiplicity="*" />
@@ -509,18 +470,6 @@
             </Principal>
             <Dependent Role="PostColors">
               <PropertyRef Name="PostID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Posts_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Posts">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -548,18 +497,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserProfile_Users1">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserProfile">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="PaletteEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Comments" EntityType="Self.Comments" />
           <EntitySet Name="Favourites" EntityType="Self.Favourites" />
@@ -569,30 +506,17 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tags" EntityType="Self.Tags" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" />
-          <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK_Comments_Posts" Association="Self.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
-            <End Role="Comments" EntitySet="Comments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
-            <End Role="Users" EntitySet="Users" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_Favourites_Posts" Association="Self.FK_Favourites_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Favourites" EntitySet="Favourites" />
           </AssociationSet>
-          <AssociationSet Name="FK_Favourites_Users" Association="Self.FK_Favourites_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Favourites" EntitySet="Favourites" />
-          </AssociationSet>
           <AssociationSet Name="FK_PostColors_Posts" Association="Self.FK_PostColors_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="PostColors" EntitySet="PostColors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Posts_Users" Association="Self.FK_Posts_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
           <AssociationSet Name="FK_PostTags_Posts" Association="Self.FK_PostTags_Posts">
             <End Role="Posts" EntitySet="Posts" />
@@ -601,10 +525,6 @@
           <AssociationSet Name="FK_PostTags_Tags" Association="Self.FK_PostTags_Tags">
             <End Role="Tags" EntitySet="Tags" />
             <End Role="PostTags" EntitySet="PostTags" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserProfile_Users1" Association="Self.FK_UserProfile_Users1">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -637,6 +557,20 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Followings" EntityType="PaletteModel.Followings" />
+          <EntitySet Name="APIKeys" EntityType="PaletteModel.APIKeys" />
+          <EntitySet Name="Users" EntityType="PaletteModel.Users" />
+          <AssociationSet Name="FK_APIKeys_Users" Association="PaletteModel.FK_APIKeys_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="APIKeys" EntitySet="APIKeys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="PaletteModel.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favourites_Users" Association="PaletteModel.FK_Favourites_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favourites" EntitySet="Favourites" />
+          </AssociationSet>
           <AssociationSet Name="FK_FollowingRelationships_Users" Association="PaletteModel.FK_FollowingRelationships_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Followings" EntitySet="Followings" />
@@ -645,10 +579,13 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Followings" EntitySet="Followings" />
           </AssociationSet>
-          <EntitySet Name="APIKeys" EntityType="PaletteModel.APIKeys" />
-          <AssociationSet Name="FK_APIKeys_Users" Association="PaletteModel.FK_APIKeys_Users">
+          <AssociationSet Name="FK_Posts_Users" Association="PaletteModel.FK_Posts_Users">
             <End Role="Users" EntitySet="Users" />
-            <End Role="APIKeys" EntitySet="APIKeys" />
+            <End Role="Posts" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users1" Association="PaletteModel.FK_UserProfile_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -672,7 +609,70 @@
           <Property Name="FollowedDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Users" Relationship="PaletteModel.FK_FollowingRelationships_Users" FromRole="Followings" ToRole="Users" />
           <NavigationProperty Name="Users1" Relationship="PaletteModel.FK_FollowingRelationships_Users1" FromRole="Followings" ToRole="Users" />
+          </EntityType>
+        <EntityType Name="APIKeys">
+          <Key>
+            <PropertyRef Name="APIKeyID" />
+          </Key>
+          <Property Name="APIKeyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="APIRole" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserKey" Type="Guid" Nullable="false" />
+          <Property Name="KeyCreateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="APIKeys" ToRole="Users" />
         </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="APIKeys" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="Users" ToRole="APIKeys" />
+          <NavigationProperty Name="Comments" Relationship="PaletteModel.FK_Comments_Users" FromRole="Users" ToRole="Comments" />
+          <NavigationProperty Name="Favourites" Relationship="PaletteModel.FK_Favourites_Users" FromRole="Users" ToRole="Favourites" />
+          <NavigationProperty Name="Followings" Relationship="PaletteModel.FK_FollowingRelationships_Users" FromRole="Users" ToRole="Followings" />
+          <NavigationProperty Name="Followings1" Relationship="PaletteModel.FK_FollowingRelationships_Users1" FromRole="Users" ToRole="Followings" />
+          <NavigationProperty Name="Posts" Relationship="PaletteModel.FK_Posts_Users" FromRole="Users" ToRole="Posts" />
+          <NavigationProperty Name="UserProfile" Relationship="PaletteModel.FK_UserProfile_Users1" FromRole="Users" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_APIKeys_Users">
+          <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PaletteModel.APIKeys" Role="APIKeys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="APIKeys">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PaletteModel.Comments" Role="Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="CommenterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favourites_Users">
+          <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PaletteModel.Favourites" Role="Favourites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favourites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FollowingRelationships_Users">
           <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
           <End Type="PaletteModel.Followings" Role="Followings" Multiplicity="*" />
@@ -697,24 +697,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="APIKeys">
-          <Key>
-            <PropertyRef Name="APIKeyID" />
-          </Key>
-          <Property Name="APIKeyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="APIRole" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="UserKey" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="PaletteModel.FK_APIKeys_Users" FromRole="APIKeys" ToRole="Users" />
-        </EntityType>
-        <Association Name="FK_APIKeys_Users">
+        <Association Name="FK_Posts_Users">
           <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="PaletteModel.APIKeys" Role="APIKeys" Multiplicity="*" />
+          <End Type="PaletteModel.Posts" Role="Posts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="UserID" />
             </Principal>
-            <Dependent Role="APIKeys">
+            <Dependent Role="Posts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users1">
+          <End Type="PaletteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PaletteModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserProfile">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -808,16 +810,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="PaletteModel.Users">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="PaletteModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="PaletteModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="PaletteModel.Store.sp_dropdiagram" />
@@ -855,10 +847,21 @@
           <EntitySetMapping Name="APIKeys">
             <EntityTypeMapping TypeName="PaletteModel.APIKeys">
               <MappingFragment StoreEntitySet="APIKeys">
+                <ScalarProperty Name="KeyCreateDate" ColumnName="KeyCreateDate" />
                 <ScalarProperty Name="UserKey" ColumnName="UserKey" />
                 <ScalarProperty Name="APIRole" ColumnName="APIRole" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="APIKeyID" ColumnName="APIKeyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PaletteModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

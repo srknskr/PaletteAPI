@@ -18,6 +18,7 @@ namespace Palette.DAL
         public int UserID { get; set; }
         public string APIRole { get; set; }
         public System.Guid UserKey { get; set; }
+        public System.DateTime KeyCreateDate { get; set; }
     
         public virtual Users Users { get; set; }
     }

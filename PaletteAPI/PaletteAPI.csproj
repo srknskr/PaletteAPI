@@ -125,6 +125,7 @@
     <Compile Include="Controllers\APIKeysController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FavouritesController.cs" />
+    <Compile Include="Controllers\FollowingsController.cs" />
     <Compile Include="Controllers\PaletteExampleController.cs" />
     <Compile Include="Controllers\PostColorsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />

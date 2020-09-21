@@ -35,8 +35,8 @@ namespace Palette.DAL
         public virtual ICollection<Favourites> Favourites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostColors> PostColors { get; set; }
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostTags> PostTags { get; set; }
+        public virtual Users Users { get; set; }
     }
 }
